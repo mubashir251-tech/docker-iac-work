@@ -1,0 +1,14 @@
+---
+- name: Deploy Docker container using Ansible
+  hosts: local
+  become: false
+
+  tasks:
+    - name: Deploy Ansible-managed Nginx container
+      community.docker.docker_container:
+        name: ansible-managed-nginx
+        image: nginx:alpine
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "8084:80"

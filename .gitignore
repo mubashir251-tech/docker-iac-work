@@ -1,0 +1,25 @@
+# Secrets
+.env
+.env.*
+
+# Terraform local data
+**/.terraform/
+
+# Terraform state and backups
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.venv/
+venv/
+
+# Ansible
+*.retry
+
+# OS files
+.DS_Store
+Thumbs.db

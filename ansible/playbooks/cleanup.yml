@@ -1,0 +1,10 @@
+---
+- name: Remove Ansible-managed Docker container
+  hosts: local
+  become: false
+
+  tasks:
+    - name: Remove Ansible-managed Nginx
+      community.docker.docker_container:
+        name: ansible-managed-nginx
+        state: absent
