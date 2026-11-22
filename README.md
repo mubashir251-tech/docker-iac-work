@@ -182,6 +182,59 @@ ansible-playbook playbooks/cleanup.yml
 
 Tested idempotency by running the deployment playbook more than once. The second unchanged execution reported `changed=0`.
 
+## CI/CD Pipeline
+
+Implemented an automated CI/CD workflow using GitHub Actions.
+
+### Continuous Integration
+
+On every push to `main` and pull request targeting `main`:
+
+1. Checkout source code.
+2. Set up Python 3.12.
+3. Install application and testing dependencies.
+4. Execute automated Flask tests using pytest.
+5. Build the Docker image.
+
+### Container Image Publishing
+
+On successful pushes to `main`:
+
+- Authenticate with GitHub Container Registry using `GITHUB_TOKEN`.
+- Build and publish the Docker image.
+- Publish `latest` and commit SHA tags.
+- Store the image in a public GHCR package.
+
+**Published Docker Image:**
+
+```bash
+docker pull ghcr.io/mubashir251-tech/docker-iac-work:latest
+```
+
+Run the published image:
+
+```bash
+docker run -d \
+  --name docker-iac-web \
+  -p 5001:5000 \
+  ghcr.io/mubashir251-tech/docker-iac-work:latest
+```
+
+Test endpoints:
+
+```bash
+curl http://localhost:5001/
+curl http://localhost:5001/health
+```
+
+**Registry:** GitHub Container Registry (GHCR)
+
+**Image visibility:** Public
+
+**CI/CD:** GitHub Actions
+
+
+
 ## Verification Results
 
 - [x] Flask application containerized successfully.
@@ -195,6 +248,8 @@ Tested idempotency by running the deployment playbook more than once. The second
 - [x] Ansible idempotency verification.
 - [x] Ansible cleanup playbook.
 - [x] Git version control and GitHub push.
+- [x] Automated Flask tests using pytest.
+- [x] GitHub Actions CI and GHCR image publishing.
 
 ## Security Considerations
 
@@ -211,7 +266,7 @@ This is a hands-on automation lab, not a production-ready deployment.
 - Terraform and Ansible manage separate Docker resources from the Compose stack.
 - Terraform uses the local Docker daemon.
 - Ansible uses a local Python virtual environment containing the Docker SDK.
-- GitHub Actions CI/CD integration is a planned next stage.
+- GitHub Actions automates testing, Docker image building, and GHCR publishing. Automated deployment to EC2 is not yet implemented.
 
 ## Author
 
